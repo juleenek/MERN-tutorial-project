@@ -1,10 +1,14 @@
 import mongoose from 'mongoose';
 import cors from 'cors';
+import postRoutes from '../routes/posts';
+
 require('dotenv').config();
 
 const express = require('express');
 
 const app = express();
+
+app.use('/posts', postRoutes);
 
 // limit: Controls the maximum request body size
 // extended: 	This option allows to choose between parsing the URL-encoded data with the querystring library (when false) or the qs library (when true).
