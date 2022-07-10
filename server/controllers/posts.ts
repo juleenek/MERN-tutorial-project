@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import PostMessage from '../models/postMessage';
+import { Post } from '../interfaces/post';
 
 export const getPosts = async (req: Request, res: Response) => {
   try {
@@ -11,5 +12,13 @@ export const getPosts = async (req: Request, res: Response) => {
 };
 
 export const createPost = async (req: Request, res: Response) => {
-  res.send(`CREATED!`);
+  const post: Post = req.body as Post;
+  const newPost = new PostMessage(post);
+  try {
+    await newPost.save();
+    res.status(200).json(newPost);
+  } catch (error) {
+    // 409 Conflict
+    res.status(409).json({ message: (error as Error).message });
+  }
 };
